@@ -102,7 +102,7 @@ class Recommender():
         purchased_ids = set(self.df_interaction.loc[self.df_interaction.customer_id == user_id].product_id_int.tolist())
         item_ids = list(set(self.df_items.loc[~self.df_items.product_id_int.isin(purchased_ids)].product_id_int.tolist()))
         df_last_buy = self.df_items.loc[self.df_items.product_id_int.isin(purchased_ids)]
-        scores = self.model.predict(user_id, item_ids, self.item_features, self.user_features)
+        scores = self.model.predict(self.map_user_id[user_id], item_ids, self.item_features, self.user_features)
         df_recommend = self.df_items.loc[self.df_items.product_id_int.isin(item_ids)]
         df_recommend['score'] = scores
         df_recommend = df_recommend.sort_values('score', ascending=False).iloc[:10]
